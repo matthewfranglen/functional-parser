@@ -131,7 +131,8 @@ class ArrayMonad extends ArrayApplicative {
 
   bind (f) {
     return this.fmap(f)
-               .reduce((a, v) => a.concat(v));
+               .reduce((a, v) => a.concat(v))
+               .value[0];
   }
 
 }
@@ -143,7 +144,7 @@ class ArrayMonad extends ArrayApplicative {
 class MaybeMonad extends MaybeApplicative {
 
   static return (v) {
-    return MaybeMonad(v);
+    return new MaybeMonad(v);
   }
 
   bind (f) {

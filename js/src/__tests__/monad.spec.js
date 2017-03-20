@@ -114,3 +114,61 @@ describe('applicative laws', () => {
   });
 
 });
+
+describe('monad laws', () => {
+
+  // return a >>= f = f a
+  it('should adhere to the left unit law', () => {
+    const _return = ArrayMonad.return;
+    const a = "value";
+    const mf = compose(_return)(f);
+
+    expect(_return(a).bind(mf)).toEqual(mf(a));
+  });
+
+  // return a >>= f = f a
+  it('should adhere to the left unit law', () => {
+    const _return = MaybeMonad.return;
+    const a = "value";
+    const mf = compose(_return)(f);
+
+    expect(_return(a).bind(mf)).toEqual(mf(a));
+  });
+
+  // m >>= return = m
+  it('should adhere to the right unit law', () => {
+    const _return = ArrayMonad.return;
+    const m = _return("value");
+
+    expect(m.bind(_return)).toEqual(m);
+  });
+
+  // m >>= return = m
+  it('should adhere to the right unit law', () => {
+    const _return = MaybeMonad.return;
+    const m = _return("value");
+
+    expect(m.bind(_return)).toEqual(m);
+  });
+
+  // (m >>= f) >>= g = m >>= (\x -> f x >>= g)
+  it('should adhere to the associativity law', () => {
+    const _return = ArrayMonad.return;
+    const m = _return("value");
+    const mf = compose(_return)(f);
+    const mg = compose(_return)(g);
+
+    expect(m.bind(mf).bind(mg)).toEqual(m.bind(v => mf(v).bind(mg)));
+  });
+
+  // (m >>= f) >>= g = m >>= (\x -> f x >>= g)
+  it('should adhere to the associativity law', () => {
+    const _return = MaybeMonad.return;
+    const m = _return("value");
+    const mf = compose(_return)(f);
+    const mg = compose(_return)(g);
+
+    expect(m.bind(mf).bind(mg)).toEqual(m.bind(v => mf(v).bind(mg)));
+  });
+
+});

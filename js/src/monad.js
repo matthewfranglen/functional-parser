@@ -64,7 +64,7 @@ class MaybeFunctor extends Maybe {
 
   fmap (f) {
     if (this.isPresent()) {
-      return new Maybe(f(this.value));
+      return new this.constructor(f(this.value));
     }
     return this;
   }

@@ -84,8 +84,8 @@ class MaybeFunctor extends Maybe {
 
 class ArrayApplicative extends ArrayFunctor {
 
-  pure (v) {
-    return new this.constructor(v);
+  static pure (v) {
+    return new ArrayApplicative(v);
   }
 
   apply (f) {
@@ -103,8 +103,8 @@ class ArrayApplicative extends ArrayFunctor {
 
 class MaybeApplicative extends MaybeFunctor {
 
-  pure (v) {
-    return new this.constructor(v);
+  static pure (v) {
+    return new MaybeApplicative(v);
   }
 
   apply (f) {
@@ -125,8 +125,8 @@ class MaybeApplicative extends MaybeFunctor {
 
 class ArrayMonad extends ArrayApplicative {
 
-  return (v) {
-    return new this.constructor(v);
+  static return (v) {
+    return new ArrayMonad(v);
   }
 
   bind (f) {
@@ -142,8 +142,8 @@ class ArrayMonad extends ArrayApplicative {
 
 class MaybeMonad extends MaybeApplicative {
 
-  return (v) {
-    return new this.constructor(v);
+  static return (v) {
+    return MaybeMonad(v);
   }
 
   bind (f) {

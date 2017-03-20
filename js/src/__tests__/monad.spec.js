@@ -1,7 +1,9 @@
 import { ArrayFunctor, ArrayApplicative, ArrayMonad, Maybe, MaybeFunctor, MaybeApplicative, MaybeMonad } from '../monad';
 
 const id = value => value;
-const compose = a => b => v => b(a(v));
+
+// (+1) . (*2) $ 1 = 3, so the left argument is applied second
+const compose = a => b => v => a(b(v));
 const $ = v => f => f(v);
 
 const f = v => `f ${v}`;
@@ -27,14 +29,14 @@ describe('functor laws', () => {
   it('should adhere to the identity law', () => {
     const v = new ArrayFunctor("value");
 
-    expect(v.fmap(compose(g)(f))).toEqual(v.fmap(g).fmap(f));
+    expect(v.fmap(compose(g)(f))).toEqual(v.fmap(f).fmap(g));
   });
 
   // fmap (g . f) = fmap g . fmap f
   it('should adhere to the identity law', () => {
     const v = new MaybeFunctor("value");
 
-    expect(v.fmap(compose(g)(f))).toEqual(v.fmap(g).fmap(f));
+    expect(v.fmap(compose(g)(f))).toEqual(v.fmap(f).fmap(g));
   });
 
 });
@@ -98,7 +100,7 @@ describe('applicative laws', () => {
     const u = pure(f);
     const v = pure(g);
 
-    expect(w.apply(v.apply(u.apply(pure(compose))))).toEqual(w.apply(u).apply(v));
+    expect(w.apply(v.apply(u.apply(pure(compose))))).toEqual(w.apply(v).apply(u));
   });
 
   // pure (.) <*> u <*> v <*> w = u <*> (v <*> w)
@@ -108,7 +110,7 @@ describe('applicative laws', () => {
     const u = pure(f);
     const v = pure(g);
 
-    expect(w.apply(v.apply(u.apply(pure(compose))))).toEqual(w.apply(u).apply(v));
+    expect(w.apply(v.apply(u.apply(pure(compose))))).toEqual(w.apply(v).apply(u));
   });
 
 });

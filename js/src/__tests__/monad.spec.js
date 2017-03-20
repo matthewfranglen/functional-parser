@@ -41,18 +41,18 @@ describe('applicative laws', () => {
 
   // pure id <*> v = v
   it('should adhere to the identity law', () => {
-    const v = "value";
     const pure = ArrayApplicative.pure;
+    const v = pure("value");
 
-    expect(pure(v).apply(pure(id))).toEqual(pure(v));
+    expect(v.apply(pure(id))).toEqual(v);
   });
 
   // pure id <*> v = v
   it('should adhere to the identity law', () => {
-    const v = "value";
     const pure = MaybeApplicative.pure;
+    const v = pure("value");
 
-    expect(pure(v).apply(pure(id))).toEqual(pure(v));
+    expect(v.apply(pure(id))).toEqual(v);
   });
 
 });

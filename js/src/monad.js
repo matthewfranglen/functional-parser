@@ -6,7 +6,33 @@
 // An array is a functor that applies the function to all elements of the array
 // An array is a holder for zero or more values of type T.
 
-class ArrayFunctor extends Array {
+class MyArray {
+
+  constructor () {
+    this.value = Array.prototype.slice.call(arguments);
+  }
+
+  concat (v) {
+    const value = this.value.concat(v.value);
+
+    return new this.constructor(...value);
+  }
+
+  map (f) {
+    const value = this.value.map(f);
+
+    return new this.constructor(...value);
+  }
+
+  reduce (f) {
+    const value = this.value.reduce(f);
+
+    return new this.constructor(value);
+  }
+
+}
+
+class ArrayFunctor extends MyArray {
 
   fmap (f) {
     return this.map(f);
@@ -63,8 +89,9 @@ class ArrayApplicative extends ArrayFunctor {
   }
 
   apply (f) {
-    return f.fmap(fun => this.map(fun))
-            .reduce((a, v) => a.concat(v));
+    return f.fmap(fun => this.fmap(fun))
+            .reduce((a, v) => a.concat(v))
+            .value[0];
   }
 
 }
